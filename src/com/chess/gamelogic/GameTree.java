@@ -13,8 +13,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.chess.PGNOptions;
 import com.chess.gamelogic.Game.GameState;
+import com.chess.pgn.PGNOptions;
+import com.chess.pgn.PgnToken;
+import com.chess.pgn.PgnTokenReceiver;
 
 public class GameTree {
     // Data from the seven tag roster (STR) part of the PGN standard
@@ -35,12 +37,12 @@ public class GameTree {
     public Node currentNode;
     public Position currentPos;    // Cached value. Computable from "currentNode".
 
-    private final PgnToken.PgnTokenReceiver gameStateListener;
+    private final PgnTokenReceiver gameStateListener;
 
     /** Creates an empty GameTree start the standard start position.
      * @param gameStateListener  Optional tree change listener.
      */
-    public GameTree(PgnToken.PgnTokenReceiver gameStateListener) {
+    public GameTree(PgnTokenReceiver gameStateListener) {
         this.gameStateListener = gameStateListener;
         try {
             setStartPos(TextIO.readFEN(TextIO.startPosFEN));
@@ -83,7 +85,7 @@ public class GameTree {
     }
 
     /** PngTokenReceiver implementation that generates plain text PGN data. */
-    private static class PgnText implements PgnToken.PgnTokenReceiver {
+    private static class PgnText implements PgnTokenReceiver {
         private StringBuilder sb = new StringBuilder(256);
         private String header = "";
         private int prevType = PgnToken.EOF;
@@ -253,7 +255,7 @@ public class GameTree {
     }
 
     /** Walks the game tree in PGN export order. */
-    public final void pgnTreeWalker(PGNOptions options, PgnToken.PgnTokenReceiver out) {
+    public final void pgnTreeWalker(PGNOptions options, PgnTokenReceiver out) {
         // Go to end of mainline to evaluate PGN result string.
         String pgnResultString;
         {
@@ -302,7 +304,7 @@ public class GameTree {
         out.processToken(null, PgnToken.EOF, null);
     }
 
-    private final void addTagPair(PgnToken.PgnTokenReceiver out, String tagName, String tagValue) {
+    private final void addTagPair(PgnTokenReceiver out, String tagName, String tagValue) {
         out.processToken(null, PgnToken.LEFT_BRACKET, null);
         out.processToken(null, PgnToken.SYMBOL, tagName);
         out.processToken(null, PgnToken.STRING, tagValue);
@@ -1143,7 +1145,7 @@ public class GameTree {
         }
 
         /** Export whole tree rooted at "node" in PGN format. */
-        public static final void addPgnData(PgnToken.PgnTokenReceiver out, Node node,
+        public static final void addPgnData(PgnTokenReceiver out, Node node,
                                             MoveNumber moveNum, PGNOptions options) {
             boolean needMoveNr = node.addPgnDataOneNode(out, moveNum, true, options);
             while (true) {
@@ -1166,7 +1168,7 @@ public class GameTree {
         }
 
         /** Export this node in PGN (or display text) format. */
-        private final boolean addPgnDataOneNode(PgnToken.PgnTokenReceiver out, MoveNumber mn,
+        private final boolean addPgnDataOneNode(PgnTokenReceiver out, MoveNumber mn,
                                                 boolean needMoveNr, PGNOptions options) {
             if ((preComment.length() > 0) && options.exp.comments) {
                 out.processToken(this, PgnToken.COMMENT, preComment);
@@ -1217,7 +1219,7 @@ public class GameTree {
             return needMoveNr;
         }
 
-        private final void addExtendedInfo(PgnToken.PgnTokenReceiver out,
+        private final void addExtendedInfo(PgnTokenReceiver out,
                                                   String extCmd, String extData) {
             out.processToken(this, PgnToken.COMMENT, "[%" + extCmd + " " + extData + "]");
         }

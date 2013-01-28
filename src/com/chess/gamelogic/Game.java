@@ -3,8 +3,9 @@ package com.chess.gamelogic;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.chess.PGNOptions;
 import com.chess.gamelogic.GameTree.Node;
+import com.chess.pgn.PGNOptions;
+import com.chess.pgn.PgnTokenReceiver;
 
 public class Game {
     boolean pendingDrawOffer;
@@ -14,9 +15,9 @@ public class Game {
     /** If true, add new moves as mainline moves. */
     private AddMoveBehavior addMoveBehavior;
 
-    PgnToken.PgnTokenReceiver gameTextListener;
+    PgnTokenReceiver gameTextListener;
 
-    public Game(PgnToken.PgnTokenReceiver gameTextListener,
+    public Game(PgnTokenReceiver gameTextListener,
                 int timeControl, int movesPerSession, int timeIncrement) {
         this.gameTextListener = gameTextListener;
         tree = new GameTree(gameTextListener);

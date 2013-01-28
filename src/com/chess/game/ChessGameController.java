@@ -138,7 +138,7 @@ public class ChessGameController extends GameController {
 	}
 
 	public ChessGame createChessGame(IChallenge challenge) {
-		ChessGame cg = new ChessGame(this, challenge);
+		ChessGame cg = new ChessGame(this.getAccount(), challenge);
 		this.games.add(cg);
 		return cg;
 	}

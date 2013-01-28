@@ -3,7 +3,7 @@ package com.chess.gamelogic;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.chess.PGNOptions;
+import com.chess.pgn.PGNOptions;
 
 public class TextIO {
     static public final String startPosFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";

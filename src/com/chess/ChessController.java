@@ -6,18 +6,19 @@ import java.util.Map;
 
 import com.chess.gamelogic.ChessParseError;
 import com.chess.gamelogic.Game;
+import com.chess.gamelogic.Game.GameState;
+import com.chess.gamelogic.GameTree.Node;
 import com.chess.gamelogic.Move;
 import com.chess.gamelogic.MoveGen;
-import com.chess.gamelogic.PgnToken;
 import com.chess.gamelogic.Piece;
 import com.chess.gamelogic.Position;
 import com.chess.gamelogic.TextIO;
-import com.chess.gamelogic.Game.GameState;
-import com.chess.gamelogic.GameTree.Node;
+import com.chess.pgn.PGNOptions;
+import com.chess.pgn.PgnTokenReceiver;
 
 public class ChessController {
 
-	private PgnToken.PgnTokenReceiver gameTextListener = null;
+	private PgnTokenReceiver gameTextListener = null;
 
 	private Game game = null;
 
@@ -38,7 +39,7 @@ public class ChessController {
 	private Move promoteMove;
 
 	public ChessController(GUIInterface gui,
-			PgnToken.PgnTokenReceiver gameTextListener, PGNOptions options) {
+			PgnTokenReceiver gameTextListener, PGNOptions options) {
 		this.gui = gui;
 		this.gameTextListener = gameTextListener;
 		this.gameMode = new GameMode(GameMode.TWO_PLAYERS);

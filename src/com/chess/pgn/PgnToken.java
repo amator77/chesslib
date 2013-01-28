@@ -1,4 +1,5 @@
-package com.chess.gamelogic;
+package com.chess.pgn;
+
 
 /** A token in a PGN data stream. Used by the PGN parser. */
 public class PgnToken {
@@ -20,26 +21,11 @@ public class PgnToken {
     public static final int EOF = 11;
 
     // Actual token data
-    int type;
-    String token;
+    public int type;
+    public String token;
 
-    PgnToken(int type, String token) {
+    public PgnToken(int type, String token) {
         this.type = type;
         this.token = token;
     }
-
-    /** PGN parser visitor interface. */
-    public interface PgnTokenReceiver {
-        /** If this method returns false, the object needs a full re-initialization, using clear() and processToken(). */
-        public boolean isUpToDate();
-
-        /** Clear object state. */
-        public void clear();
-
-        /** Update object state with one token from a PGN game. */
-        public void processToken(GameTree.Node node, int type, String token);
-
-        /** Change current move number. */
-        public void setCurrent(GameTree.Node node);
-    };
 }
