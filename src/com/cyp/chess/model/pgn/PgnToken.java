@@ -1,4 +1,4 @@
-package com.chess.pgn;
+package com.cyp.chess.model.pgn;
 
 
 /** A token in a PGN data stream. Used by the PGN parser. */

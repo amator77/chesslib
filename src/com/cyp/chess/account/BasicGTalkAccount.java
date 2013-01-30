@@ -1,16 +1,16 @@
-package com.chess.account;
+package com.cyp.chess.account;
 
 import java.io.IOException;
 
-import com.chess.game.ChessGameController;
-import com.gamelib.accounts.Account;
-import com.gamelib.application.Application;
-import com.gamelib.transport.Connection;
-import com.gamelib.transport.Roster;
-import com.gamelib.transport.exceptions.LoginException;
-import com.gamelib.transport.xmpp.google.XMPPMD5Connection;
+import com.cyp.accounts.Account;
+import com.cyp.application.Application;
+import com.cyp.chess.game.ChessGameController;
+import com.cyp.transport.Connection;
+import com.cyp.transport.Roster;
+import com.cyp.transport.exceptions.LoginException;
+import com.cyp.transport.xmpp.google.XMPPMD5Connection;
 
-public class GoogleChessAccount implements Account {
+public class BasicGTalkAccount implements Account {
 
 	private String id;
 
@@ -24,7 +24,7 @@ public class GoogleChessAccount implements Account {
 	
 	private ChessGameController chessCtrl;
 	
-	public GoogleChessAccount(String id, String credentials) {
+	public BasicGTalkAccount(String id, String credentials) {
 		this.id = id;
 		this.credentials = credentials;
 		this.connection = new XMPPMD5Connection();

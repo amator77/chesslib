@@ -1,4 +1,4 @@
-package com.chess.pgn;
+package com.cyp.chess.model.pgn;
 
 /** Settings controlling PGN import/export */
 public class PGNOptions {

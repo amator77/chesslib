@@ -1,6 +1,6 @@
-package com.chess.game;
+package com.cyp.chess.game;
 
-import com.gamelib.game.IGameListener;
+import com.cyp.game.IGameListener;
 
 public interface ChessGameListener extends IGameListener {
 	
@@ -10,7 +10,7 @@ public interface ChessGameListener extends IGameListener {
 	
 	public void chatReceived(String text);
 	
-	public void moveReceived(Move move);
+	public void moveReceived(String move);
 	
 	public void drawRequestReceived();
 	

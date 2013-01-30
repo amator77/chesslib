@@ -1,8 +1,8 @@
-package com.chess.pgn;
+package com.cyp.chess.model.pgn;
 
 import java.util.HashMap;
 
-import com.chess.gamelogic.GameTree.Node;
+import com.cyp.chess.model.GameTree.Node;
 
 public class HTMLPGNText implements PgnTokenReceiver {
 

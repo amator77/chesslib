@@ -1,6 +1,6 @@
-package com.chess.pgn;
+package com.cyp.chess.model.pgn;
 
-import com.chess.gamelogic.GameTree;
+import com.cyp.chess.model.GameTree;
 
 public interface PgnTokenReceiver {
 

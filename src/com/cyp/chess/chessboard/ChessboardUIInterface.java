@@ -1,32 +1,18 @@
-package com.chess;
+package com.cyp.chess.chessboard;
 
 import java.util.ArrayList;
 
-import com.chess.gamelogic.Game;
-import com.chess.gamelogic.Move;
-import com.chess.gamelogic.Position;
+import com.cyp.chess.model.Move;
+import com.cyp.chess.model.Position;
 
-public interface GUIInterface {
-
-    /** Update the displayed board position. */
+public interface ChessboardUIInterface {
+    
     public void setPosition(Position pos, String variantInfo, ArrayList<Move> variantMoves);
 
-    /** Mark square sq as selected. Set to -1 to clear selection. */
     public void setSelection(int sq);
 
-    final static class GameStatus {
-        public Game.GameState state = Game.GameState.ALIVE;
-        public int moveNr = 0;
-        /** Move required to claim draw, or empty string. */
-        public String drawInfo = "";
-        public boolean white = false;
-        public boolean ponder = false;
-        public boolean thinking = false;
-        public boolean analyzing = false;
-    }
-
     /** Set the status text. */
-    public void setStatus(GameStatus status);
+    public void setStatus(ChessboardStatus status);
 
     /** Update the list of moves. */
     public void moveListUpdated();
@@ -56,4 +42,6 @@ public interface GUIInterface {
     public boolean discardVariations();
 
 	public void remoteMoveMade();
+	
+	public void localMoveMade(Move m);
 }

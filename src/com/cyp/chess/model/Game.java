@@ -1,11 +1,11 @@
-package com.chess.gamelogic;
+package com.cyp.chess.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.chess.gamelogic.GameTree.Node;
-import com.chess.pgn.PGNOptions;
-import com.chess.pgn.PgnTokenReceiver;
+import com.cyp.chess.model.GameTree.Node;
+import com.cyp.chess.model.pgn.PGNOptions;
+import com.cyp.chess.model.pgn.PgnTokenReceiver;
 
 public class Game {
     boolean pendingDrawOffer;

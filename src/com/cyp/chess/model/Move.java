@@ -1,4 +1,4 @@
-package com.chess.gamelogic;
+package com.cyp.chess.model;
 
 
 public class Move {

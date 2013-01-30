@@ -1,4 +1,4 @@
-package com.chess.gamelogic;
+package com.cyp.chess.model;
 
 public final class Pair<T1, T2> {
     public final T1 first;

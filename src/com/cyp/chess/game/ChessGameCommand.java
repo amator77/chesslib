@@ -1,10 +1,10 @@
-package com.chess.game;
+package com.cyp.chess.game;
 
-import com.gamelib.game.IGameCommand;
+import com.cyp.game.impl.GenericSendGameCommand;
 
-public interface ChessGameCommand extends IGameCommand {
+public class ChessGameCommand extends GenericSendGameCommand {
 	
-	public static final String HEADER_ID_KEY = "gid";
+	public static final String HEADER_MOVE_VALUE_KEY = "mv";
 	
 	public static final int MOVE_COMMAND_ID = 8;	
 		
@@ -23,4 +23,9 @@ public interface ChessGameCommand extends IGameCommand {
 	public static final int REMATCH_ACCEPTED_COMMAND_ID = 15;
 	
 	public static final int GAME_CLOSED_COMMAND_ID = 16;
+	
+	public ChessGameCommand(int commandId) {
+		super(commandId);
+		setHeader(ChessGameCommand.GAME_COMMAND_HEADER_KEY,String.valueOf(commandId));
+	}
 }

@@ -1,9 +1,9 @@
-package com.chess.gamelogic;
+package com.cyp.chess.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.chess.pgn.PGNOptions;
+import com.cyp.chess.model.pgn.PGNOptions;
 
 public class TextIO {
     static public final String startPosFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";

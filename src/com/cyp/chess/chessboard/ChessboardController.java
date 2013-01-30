@@ -1,30 +1,30 @@
-package com.chess;
+package com.cyp.chess.chessboard;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.chess.gamelogic.ChessParseError;
-import com.chess.gamelogic.Game;
-import com.chess.gamelogic.Game.GameState;
-import com.chess.gamelogic.GameTree.Node;
-import com.chess.gamelogic.Move;
-import com.chess.gamelogic.MoveGen;
-import com.chess.gamelogic.Piece;
-import com.chess.gamelogic.Position;
-import com.chess.gamelogic.TextIO;
-import com.chess.pgn.PGNOptions;
-import com.chess.pgn.PgnTokenReceiver;
+import com.cyp.chess.model.ChessParseError;
+import com.cyp.chess.model.Game;
+import com.cyp.chess.model.Game.GameState;
+import com.cyp.chess.model.GameTree.Node;
+import com.cyp.chess.model.Move;
+import com.cyp.chess.model.MoveGen;
+import com.cyp.chess.model.Piece;
+import com.cyp.chess.model.Position;
+import com.cyp.chess.model.TextIO;
+import com.cyp.chess.model.pgn.PGNOptions;
+import com.cyp.chess.model.pgn.PgnTokenReceiver;
 
-public class ChessController {
+public class ChessboardController {
 
 	private PgnTokenReceiver gameTextListener = null;
 
 	private Game game = null;
 
-	private GUIInterface gui;
-
-	private GameMode gameMode;
+	private ChessboardUIInterface gui;
+	
+	private ChessboardMode gameMode;
 
 	private PGNOptions pgnOptions;
 
@@ -38,11 +38,11 @@ public class ChessController {
 
 	private Move promoteMove;
 
-	public ChessController(GUIInterface gui,
+	public ChessboardController(ChessboardUIInterface gui,
 			PgnTokenReceiver gameTextListener, PGNOptions options) {
 		this.gui = gui;
 		this.gameTextListener = gameTextListener;
-		this.gameMode = new GameMode(GameMode.TWO_PLAYERS);
+		this.gameMode = new ChessboardMode(ChessboardMode.ANALYSIS);
 		this.pgnOptions = options;
 		this.timeControl = 120000;
 		this.movesPerSession = 60;
@@ -50,10 +50,13 @@ public class ChessController {
 	}
 
 	/** Start a new game. */
-	public final synchronized void newGame(GameMode gameMode) {
+	public final synchronized void newGame(ChessboardMode gameMode) {
 		this.gameMode = gameMode;
 		this.game = new Game(gameTextListener, timeControl, movesPerSession,
 				timeIncrement);
+				
+		game.currPos().whiteMove = ( gameMode.getModeNr() == ChessboardMode.TWO_PLAYERS_BLACK_REMOTE );
+		
 		updateGUI();
 		setPlayerNames(game);
 		updateGameMode();
@@ -99,7 +102,7 @@ public class ChessController {
 	}
 
 	/** Set game mode. */
-	public final synchronized void setGameMode(GameMode newMode) {
+	public final synchronized void setGameMode(ChessboardMode newMode) {
 		if (!gameMode.equals(newMode)) {
 			gameMode = newMode;
 			if (!gameMode.playerWhite() || !gameMode.playerBlack())
@@ -110,7 +113,7 @@ public class ChessController {
 		}
 	}
 
-	public GameMode getGameMode() {
+	public ChessboardMode getGameMode() {
 		return gameMode;
 	}
 	
@@ -182,26 +185,25 @@ public class ChessController {
 	}
 
 	/** True if human's turn to make a move. (True in analysis mode.) */
-	public final synchronized boolean humansTurn() {
+	public boolean localTurn() {
 		if (game == null)
 			return false;
-		return gameMode.humansTurn(game.currPos().whiteMove);
+		
+		return gameMode.localTurn(game.currPos().whiteMove);
 	}
 
 	/** Make a move for a human player. */
-	public final synchronized void makeHumanMove(Move m) {
-		if (humansTurn()) {
+	public final synchronized void makeLocalMove(Move m) {
+		if (localTurn()) {
 			Position oldPos = new Position(game.currPos());
 			if (doMove(m)) {
+				gui.localMoveMade(m);
 				setAnimMove(oldPos, m, true);
 				updateGUI();
 			} else {
 				gui.setSelection(-1);
 			}
-		}
-		else{
-			this.makeRemoteMove(TextIO.moveToUCIString(m));
-		}
+		}		
 	}
 
 	/**
@@ -232,12 +234,12 @@ public class ChessController {
 		promoteMove.promoteTo = promoteTo;
 		Move m = promoteMove;
 		promoteMove = null;
-		makeHumanMove(m);
+		makeLocalMove(m);
 	}
 
 	/** Add a null-move to the game tree. */
 	public final synchronized void makeHumanNullMove() {
-		if (humansTurn()) {
+		if (localTurn()) {
 			int varNo = game.tree.addMove("--", "", 0, "", "");
 			game.tree.goForward(varNo);
 			updateGUI();
@@ -341,10 +343,10 @@ public class ChessController {
 			return;
 		if (!game.goNode(node))
 			return;
-		if (!humansTurn()) {
+		if (!localTurn()) {
 			if (game.getLastMove() != null) {
 				game.undoMove();
-				if (!humansTurn())
+				if (!localTurn())
 					game.redoMove();
 			}
 		}
@@ -483,7 +485,7 @@ public class ChessController {
 	private final void updateGameMode() {
 		if (game != null) {
 			boolean gamePaused = !gameMode.clocksActive()
-					|| (humansTurn() && guiPaused);
+					|| (localTurn() && guiPaused);
 			game.setGamePaused(gamePaused);
 			updateRemainingTime();
 			Game.AddMoveBehavior amb;
@@ -497,7 +499,7 @@ public class ChessController {
 		}
 	}
 
-	public final synchronized void makeRemoteMove(final String cmd) {
+	public void makeRemoteMove(final String cmd) {
 		Position oldPos = new Position(game.currPos());
 		game.processString(cmd);
 		updateGameMode();
@@ -519,10 +521,10 @@ public class ChessController {
 			return false;
 
 		game.undoMove();
-		if (!humansTurn()) {
+		if (!localTurn()) {
 			if (game.getLastMove() != null) {
 				game.undoMove();
-				if (!humansTurn()) {
+				if (!localTurn()) {
 					game.redoMove();
 				}
 			} else {
@@ -542,9 +544,9 @@ public class ChessController {
 		if (game.canRedoMove()) {
 
 			game.redoMove();
-			if (!humansTurn() && game.canRedoMove()) {
+			if (!localTurn() && game.canRedoMove()) {
 				game.redoMove();
-				if (!humansTurn())
+				if (!localTurn())
 					game.undoMove();
 			}
 		}
@@ -579,8 +581,7 @@ public class ChessController {
 	}
 
 	private final void updateGUI() {
-
-		GUIInterface.GameStatus s = new GUIInterface.GameStatus();
+		ChessboardStatus s = new ChessboardStatus();
 		s.state = game.getGameState();
 		if (s.state == Game.GameState.ALIVE) {
 			s.moveNr = game.currPos().fullMoveCounter;
@@ -592,7 +593,8 @@ public class ChessController {
 		}
 		gui.setStatus(s);
 		updateMoveList();
-
+								
+				
 		gui.setPosition(game.currPos(),"", game.tree.variations());
 
 		updateRemainingTime();

@@ -1,4 +1,4 @@
-package com.chess.gamelogic;
+package com.cyp.chess.model;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.chess.gamelogic.Game.GameState;
-import com.chess.pgn.PGNOptions;
-import com.chess.pgn.PgnToken;
-import com.chess.pgn.PgnTokenReceiver;
+import com.cyp.chess.model.Game.GameState;
+import com.cyp.chess.model.pgn.PGNOptions;
+import com.cyp.chess.model.pgn.PgnToken;
+import com.cyp.chess.model.pgn.PgnTokenReceiver;
 
 public class GameTree {
     // Data from the seven tag roster (STR) part of the PGN standard

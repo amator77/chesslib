@@ -1,4 +1,4 @@
-package com.chess.gamelogic;
+package com.cyp.chess.model;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
