@@ -40,8 +40,6 @@ public interface ChessboardUIInterface {
 
     /** Return true if only main-line moves are to be kept. */
     public boolean discardVariations();
-
-	public void remoteMoveMade();
-	
+    
 	public void localMoveMade(Move m);
 }

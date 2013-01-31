@@ -21,8 +21,6 @@ public interface ChessGameListener extends IGameListener {
 	public void abortAcceptedReceived();
 	
 	public void rematchRequestReceived();
-	
-	public void rematchAcceptedReceived();
-	
+			
 	public void gameClosedReceived();
 }

@@ -50,12 +50,12 @@ public class ChessboardController {
 	}
 
 	/** Start a new game. */
-	public final synchronized void newGame(ChessboardMode gameMode) {
+	public void newGame(ChessboardMode gameMode) {
 		this.gameMode = gameMode;
 		this.game = new Game(gameTextListener, timeControl, movesPerSession,
 				timeIncrement);
 				
-		game.currPos().whiteMove = ( gameMode.getModeNr() == ChessboardMode.TWO_PLAYERS_BLACK_REMOTE );
+		game.currPos().whiteMove = true;
 		
 		updateGUI();
 		setPlayerNames(game);
@@ -186,7 +186,7 @@ public class ChessboardController {
 
 	/** True if human's turn to make a move. (True in analysis mode.) */
 	public boolean localTurn() {
-		if (game == null)
+		if ( game == null || game.getGameState() != GameState.ALIVE )
 			return false;
 		
 		return gameMode.localTurn(game.currPos().whiteMove);
@@ -259,13 +259,29 @@ public class ChessboardController {
 	}
 
 	/** Resign game for current player. */
-	public final synchronized void resignGame() {
+	public void resignGame() {
 		if (game.getGameState() == GameState.ALIVE) {
 			game.processString("resign");
 			updateGUI();
 		}
 	}
-
+	
+	public void drawGame() {
+		if (game.getGameState() == GameState.ALIVE) {			
+			game.processString("draw accept");
+			updateGUI();
+			System.out.println( "game state :"+ game.getGameState());
+		}				
+	}
+	
+	/** Resign game for current player. */
+	public final synchronized void abortGame() {
+		if (game.getGameState() == GameState.ALIVE) {
+			game.processString("abort");
+			updateGUI();
+		}
+	}
+	
 	/** Undo last move. Does not truncate game tree. */
 	public final synchronized void undoMove() {
 		if (game.getLastMove() != null) {
@@ -499,14 +515,19 @@ public class ChessboardController {
 		}
 	}
 
+	public void offerDraw() {		
+		game.processString("draw offer ");									
+		updateGUI();
+	}
+	
 	public void makeRemoteMove(final String cmd) {
 		Position oldPos = new Position(game.currPos());
-		game.processString(cmd);
-		updateGameMode();
-		gui.remoteMoveMade();
+		game.processString(cmd);		
+		updateGameMode();		
 		setSelection();
 		setAnimMove(oldPos, game.getLastMove(), true);
 		updateGUI();
+		System.out.println( "game state :"+ game.getGameState() + " after command :"+cmd);
 	}
 
 	private final void setPlayerNames(Game game) {
@@ -644,4 +665,6 @@ public class ChessboardController {
 			return true;
 		return false;
 	}
+
+	
 }

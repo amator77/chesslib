@@ -767,5 +767,5 @@ public class TextIO {
         if ((idx > 0) && (charToPiece(true, str.charAt(idx)) != -1))
             idx--;
         return str.substring(0, idx + 1) + '=' + str.substring(idx + 1, str.length());
-    }
+    }        
 }

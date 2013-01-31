@@ -101,6 +101,7 @@ public class Game {
      * @return True if str was understood, false otherwise.
      */
     public final boolean processString(String str) {
+    	    	
         if (getGameState() != GameState.ALIVE)
             return false;
         if (str.startsWith("draw ")) {
@@ -110,12 +111,17 @@ public class Game {
         } else if (str.equals("resign")) {
             addToGameTree(new Move(0, 0, 0), "resign");
             return true;
-        }
+        }else if(str.startsWith("abort")){
+        	addToGameTree(new Move(0, 0, 0), "abort");
+            return true;
+    	}    	        
 
         Move m = TextIO.UCIstringToMove(str);
+        
         if (m != null)
-            if (!TextIO.isValid(currPos(), m))
+            if (!TextIO.isValid(currPos(), m)){            	
                 m = null;
+            }
         if (m == null)
             m = TextIO.stringToMove(currPos(), str);
         if (m == null)
@@ -294,7 +300,8 @@ public class Game {
         DRAW_NO_MATE,       // Draw by impossibility of check mate
         DRAW_AGREE,         // Draw by agreement
         RESIGN_WHITE,       // White resigns
-        RESIGN_BLACK        // Black resigns
+        RESIGN_BLACK,       // Black resigns
+        ABORTED				//Game aborted by agreement
     }
 
     /**
@@ -372,6 +379,7 @@ public class Game {
     }
 
     private final void handleDrawCmd(String drawCmd) {
+    	System.out.println("handle draw cmd :"+drawCmd);
         Position pos = tree.currentPos;
         if (drawCmd.startsWith("rep") || drawCmd.startsWith("50")) {
             boolean rep = drawCmd.startsWith("rep");
@@ -434,9 +442,13 @@ public class Game {
             if (TextIO.stringToMove(pos, ms) != null) {
                 processString(ms);
             }
-        } else if (drawCmd.equals("accept")) {
-            if (haveDrawOffer())
+        } else if (drawCmd.equals("accept")) {        	
+            if (pendingDrawOffer){
                 addToGameTree(new Move(0, 0, 0), "draw accept");
+                pendingDrawOffer = false;
+            }
         }
     }
 }
+
+    

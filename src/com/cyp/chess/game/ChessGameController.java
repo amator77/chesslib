@@ -103,14 +103,7 @@ public class ChessGameController extends GameController {
 								((ChessGameListener) listener)
 										.rematchRequestReceived();
 							}
-							return true;
-						case ChessGameCommand.REMATCH_ACCEPTED_COMMAND_ID:
-							for (IGameListener listener : game
-									.getGameListeners()) {
-								((ChessGameListener) listener)
-										.rematchAcceptedReceived();
-							}
-							return true;
+							return true;						
 						default:
 							break;
 						}

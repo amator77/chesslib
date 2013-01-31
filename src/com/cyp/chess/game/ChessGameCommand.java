@@ -1,5 +1,6 @@
 package com.cyp.chess.game;
 
+import com.cyp.game.IGame;
 import com.cyp.game.impl.GenericSendGameCommand;
 
 public class ChessGameCommand extends GenericSendGameCommand {
@@ -19,13 +20,13 @@ public class ChessGameCommand extends GenericSendGameCommand {
 	public static final int ABORT_ACCEPTED_COMMAND_ID = 13;
 	
 	public static final int REMATCH_COMMAND_ID = 14;
-	
-	public static final int REMATCH_ACCEPTED_COMMAND_ID = 15;
-	
-	public static final int GAME_CLOSED_COMMAND_ID = 16;
-	
-	public ChessGameCommand(int commandId) {
+		
+	public static final int GAME_CLOSED_COMMAND_ID = 15;
+		
+	public ChessGameCommand(IGame game, int commandId) {
 		super(commandId);
-		setHeader(ChessGameCommand.GAME_COMMAND_HEADER_KEY,String.valueOf(commandId));
+		this.setTo(game.getChallenge().getRemoteId());
+		this.setHeader(ChessGameCommand.GAME_ID_HEADER_KEY,String.valueOf(game.getChallenge().getTime()));
+		this.setHeader(ChessGameCommand.GAME_COMMAND_HEADER_KEY,String.valueOf(commandId));				
 	}
 }
