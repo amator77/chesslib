@@ -176,7 +176,6 @@ public class HTMLPGNText implements PgnTokenReceiver {
 		prevType = type;
 	}
 
-	@Override
 	public void clear() {
 		sb.delete(0, sb.length());
 		prevType = PgnToken.EOF;
@@ -194,7 +193,6 @@ public class HTMLPGNText implements PgnTokenReceiver {
 		upToDate = false;
 	}
 	
-	@Override
 	public void setCurrent(Node node) {
 		
 		NodeInfo ni = nodeToCharPos.get(node);

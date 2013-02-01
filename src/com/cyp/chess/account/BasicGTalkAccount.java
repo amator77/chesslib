@@ -32,17 +32,14 @@ public class BasicGTalkAccount implements Account {
 		this.chessCtrl = new ChessGameController(this);
 	}
 
-	@Override
 	public String getId() {
 		return this.id;
 	}
 
-	@Override
 	public Connection getConnection() {
 		return this.connection;
 	}
 
-	@Override
 	public Roster getRoster() {
 		if (this.connection.isConnected()) {
 			return this.connection.getRoster();
@@ -51,17 +48,14 @@ public class BasicGTalkAccount implements Account {
 		}
 	}
 
-	@Override
 	public TYPE getType() {
 		return TYPE.XMPP_GOOGLE;
 	}
 
-	@Override
 	public STATUS getStatus() {
 		return this.status;
 	}
 
-	@Override
 	public void login(LoginCallback callback) {
 		
 		if (!this.connection.isConnected() && this.loginCallback == null) {
@@ -92,24 +86,20 @@ public class BasicGTalkAccount implements Account {
 		}
 	}
 
-	@Override
 	public void logout() {
 		if (this.connection.isConnected()) {
 			this.connection.logout();
 		}
 	}	
 
-	@Override
 	public ChessGameController getGameController() {
 		return this.chessCtrl;
 	}
 
-	@Override
 	public String getIconTypeResource() {
 		return null;
 	}
 	
-	@Override
 	public String toString() {
 		return "GoogleAccount [id=" + id + ", credentials=" + credentials
 				+ ", connection=" + connection + ", status=" + status

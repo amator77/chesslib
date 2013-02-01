@@ -124,7 +124,6 @@ public class ChessGameController extends GameController {
 		return false;
 	}
 	
-	@Override
 	public ChessGame startGame(IChallenge challenge) {
 		ChessGame cg = new ChessGame(this.getAccount(), challenge);
 		
@@ -141,9 +140,9 @@ public class ChessGameController extends GameController {
 		return cg;
 	}
 	
-	private ChessGame findGame(String fromId, long time) {
+	public ChessGame findGame(String remoteId, long time) {
 		for ( IGame game : this.listGames() ) {
-			if (game.getChallenge().getRemoteId().equals(fromId)
+			if (game.getChallenge().getRemoteId().equals(remoteId)
 					&& game.getChallenge().getTime() == time) {
 				return (ChessGame)game;
 			}

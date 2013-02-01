@@ -121,7 +121,6 @@ public class GameTree {
             return ret.toString();
         }
 
-        @Override
         public void processToken(Node node, int type, String token) {
             if (    (prevType == PgnToken.RIGHT_BRACKET) &&
                     (type != PgnToken.LEFT_BRACKET))  {
@@ -189,14 +188,14 @@ public class GameTree {
             prevType = type;
         }
 
-        @Override
+
         public boolean isUpToDate() {
             return true;
         }
-        @Override
+
         public void clear() {
         }
-        @Override
+
         public void setCurrent(Node node) {
         }
     }
