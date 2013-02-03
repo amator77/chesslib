@@ -8,15 +8,16 @@ import com.cyp.chess.game.ChessGameController;
 import com.cyp.transport.Connection;
 import com.cyp.transport.Roster;
 import com.cyp.transport.exceptions.LoginException;
-import com.cyp.transport.xmpp.google.XMPPMD5Connection;
+import com.cyp.transport.xmpp.google.GTalkConnection;
+import com.cyp.transport.xmpp.google.GTalkConnectionFactory;
 
-public class BasicGTalkAccount implements Account {
+public class GTalkAccount implements Account {
 
 	private String id;
 
 	private String credentials;
 
-	private XMPPMD5Connection connection;
+	private GTalkConnection connection;
 
 	private STATUS status;
 
@@ -24,10 +25,10 @@ public class BasicGTalkAccount implements Account {
 	
 	private ChessGameController chessCtrl;
 	
-	public BasicGTalkAccount(String id, String credentials) {
+	public GTalkAccount(String id, String credentials) {
 		this.id = id;
 		this.credentials = credentials;
-		this.connection = new XMPPMD5Connection();
+		this.connection = GTalkConnectionFactory.createMD5Connection();
 		this.status = STATUS.OFFLINE;
 		this.chessCtrl = new ChessGameController(this);
 	}
