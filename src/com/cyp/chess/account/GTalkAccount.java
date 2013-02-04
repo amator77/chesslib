@@ -25,16 +25,20 @@ public class GTalkAccount implements Account {
 	
 	private ChessGameController chessCtrl;
 	
-	public GTalkAccount(String id, String credentials) {
+	public GTalkAccount(String id, String credentials ,boolean useOauth2) {
 		this.id = id;
 		this.credentials = credentials;
-		this.connection = GTalkConnectionFactory.createMD5Connection();
+		this.connection = useOauth2 ? GTalkConnectionFactory.createOpenAuthConnection() : GTalkConnectionFactory.createMD5Connection();
 		this.status = STATUS.OFFLINE;
 		this.chessCtrl = new ChessGameController(this);
 	}
+	
+	public GTalkAccount(String id, String credentials) {
+		this(id,credentials,false);
+	}
 
-	public String getId() {
-		return this.id;
+	public String getId() {		
+		return this.connection.getAccountId();
 	}
 
 	public Connection getConnection() {
