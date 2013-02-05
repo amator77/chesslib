@@ -6,10 +6,9 @@ import com.cyp.accounts.Account;
 import com.cyp.application.Application;
 import com.cyp.chess.game.ChessGameController;
 import com.cyp.transport.Connection;
+import com.cyp.transport.ConnectionFactory;
 import com.cyp.transport.Roster;
 import com.cyp.transport.exceptions.LoginException;
-import com.cyp.transport.xmpp.google.GTalkConnection;
-import com.cyp.transport.xmpp.google.GTalkConnectionFactory;
 
 public class GTalkAccount implements Account {
 
@@ -17,7 +16,7 @@ public class GTalkAccount implements Account {
 
 	private String credentials;
 
-	private GTalkConnection connection;
+	private Connection connection;
 
 	private STATUS status;
 
@@ -28,7 +27,7 @@ public class GTalkAccount implements Account {
 	public GTalkAccount(String id, String credentials ,boolean useOauth2) {
 		this.id = id;
 		this.credentials = credentials;
-		this.connection = useOauth2 ? GTalkConnectionFactory.createOpenAuthConnection() : GTalkConnectionFactory.createMD5Connection();
+		this.connection = ConnectionFactory.getFactory().createConnection(useOauth2 ? ConnectionFactory.CONNECTION_TYPE.XMPP_GTALK_OAUTH2 : ConnectionFactory.CONNECTION_TYPE.XMPP_GTALK_MD5);
 		this.status = STATUS.OFFLINE;
 		this.chessCtrl = new ChessGameController(this);
 	}
