@@ -23,7 +23,7 @@ public class GTalkAccount implements Account {
 	private LoginCallback loginCallback;
 	
 	private ChessGameController chessCtrl;
-	
+			
 	public GTalkAccount(String id, String credentials ,boolean useOauth2) {
 		this.id = id;
 		this.credentials = credentials;

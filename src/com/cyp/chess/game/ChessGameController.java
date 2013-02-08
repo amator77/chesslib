@@ -129,10 +129,10 @@ public class ChessGameController extends GameController {
 		
 		if( challenge.isReceived() ){
 			cg.setWhitePlayer(challenge.getLocalId());
-			cg.setBlackPlayer(challenge.getRemoteId());
+			cg.setBlackPlayer(challenge.getRemoteContact().getId());
 		}
 		else{
-			cg.setWhitePlayer(challenge.getRemoteId());
+			cg.setWhitePlayer(challenge.getRemoteContact().getId());
 			cg.setBlackPlayer(challenge.getLocalId());
 		}
 		
@@ -142,7 +142,7 @@ public class ChessGameController extends GameController {
 	
 	public ChessGame findGame(String remoteId, long time) {
 		for ( IGame game : this.listGames() ) {
-			if (game.getChallenge().getRemoteId().equals(remoteId)
+			if (game.getChallenge().getRemoteContact().getId().equals(remoteId)
 					&& game.getChallenge().getTime() == time) {
 				return (ChessGame)game;
 			}

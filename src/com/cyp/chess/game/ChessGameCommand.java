@@ -25,7 +25,7 @@ public class ChessGameCommand extends GenericSendGameCommand {
 		
 	public ChessGameCommand(IGame game, int commandId) {
 		super(commandId);
-		this.setTo(game.getChallenge().getRemoteId());
+		this.setTo(game.getChallenge().getRemoteContact().getId());
 		this.setHeader(ChessGameCommand.GAME_ID_HEADER_KEY,String.valueOf(game.getChallenge().getTime()));
 		this.setHeader(ChessGameCommand.GAME_COMMAND_HEADER_KEY,String.valueOf(commandId));				
 	}
